@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --lg-red: #A50034;
+  --lg-dark: #333333;
+  --lg-gray: #f4f4f4;
+}
