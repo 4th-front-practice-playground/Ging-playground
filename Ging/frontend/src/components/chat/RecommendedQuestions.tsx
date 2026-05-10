@@ -39,12 +39,12 @@ function RecommendedQuestions({
         <div className="flex flex-1 flex-col items-center justify-center px-8">
             
             {/* 챗봇 아이콘 */}
-            <div className="mb-8 flex h-28 w-28 items-center justify-center rounded-full bg-red-50 text-5xl shadow-inner">
+            <div className="mb-8 flex h-20 w-28 items-center justify-center rounded-full bg-red-50 text-5xl shadow-inner">
                 💬
             </div>
 
             {/* 제목 */}
-            <h2 className="mb-3 text-5xl font-bold tracking-tight">
+            <h2 className="mb-3 text-4xl font-bold tracking-tight">
                 무엇을 도와드릴까요?
             </h2>
 
@@ -53,7 +53,7 @@ function RecommendedQuestions({
             </p>
 
             {/* 추천 카드 */}
-            <div className="grid w-full max-w-4xl grid-cols-2 gap-5">
+            <div className="grid w-full max-w-3xl grid-cols-2 gap-3">
                 {questions.map((question) => (
                     <button
                         key={question.title}

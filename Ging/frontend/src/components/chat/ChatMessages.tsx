@@ -9,7 +9,7 @@ function ChatMessages({ messages }: ChatMessagesProps) {
         return (
             <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
                 <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-red-50 text-4xl">
-                    🤖
+                    💬
                 </div>
 
                 <h2 className="mb-3 text-4xl font-bold">
@@ -20,7 +20,7 @@ function ChatMessages({ messages }: ChatMessagesProps) {
                     원하는 가전 조건을 선택하거나 직접 입력해보세요.
                 </p>
 
-                <div className="grid w-full max-w-3xl grid-cols-2 gap-4">
+                <div className="grid w-full max-w-3xl grid-cols-2 gap-3">
                     {[
                         "혼자 사는데 어떤 냉장고가 좋아?",
                         "20평대 에어컨 추천해줘",
