@@ -1,54 +1,212 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title>상품 상세 페이지</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가전 쇼핑몰 카테고리 페이지</title>
+    <style>
+        :root {
+            --primary-color: #c60055; /* 이미지 포인트 컬러 */
+            --border-color: #ccc;
+            --bg-gray: #e0e0e0;
+        }
+
+        body { font-family: 'Malgun Gothic', sans-serif; margin: 0; padding: 20px; background-color: #f0f0f0; }
+
+        /* 전체 레이아웃 */
+        .wrapper { background: white; max-width: 1200px; margin: 0 auto; border: 1px solid #999; }
+
+        /* 헤더 */
+        header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-menu { display: flex; gap: 10px; }
+        .nav-item {
+            padding: 8px 30px;
+            background: var(--bg-gray);
+            cursor: pointer;
+            font-size: 14px;
+            border: none;
+        }
+        .nav-item.active { background: #888; color: white; }
+        .user-menu button { padding: 8px 20px; background: var(--bg-gray); border: none; cursor: pointer; margin-left: 10px; }
+
+        /* 메인 컨테이너 */
+        .container { display: flex; border-top: 2px solid var(--border-color); min-height: 700px; }
+
+        /* 사이드바 */
+        aside { width: 260px; border-right: 2px solid var(--border-color); padding: 20px; box-sizing: border-box; }
+        .filter-group { margin-bottom: 30px; }
+        .filter-title { font-weight: bold; font-size: 18px; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
+        
+        .check-list { list-style: none; padding: 0; margin: 0; }
+        .check-list li { margin-bottom: 10px; display: flex; align-items: center; font-size: 15px; }
+        .check-list input { margin-right: 10px; width: 16px; height: 16px; border: 1px solid #aaa; }
+
+        /* 슬라이더 스타일 */
+        .range-inputs { display: flex; align-items: center; gap: 5px; margin-bottom: 15px; }
+        .range-inputs input { width: 70px; padding: 5px; text-align: center; border: 1px solid var(--border-color); font-size: 14px; }
+        
+        .slider-container { position: relative; width: 100%; height: 20px; margin-top: 10px; }
+        .slider-track { position: absolute; width: 100%; height: 4px; background: var(--primary-color); top: 50%; transform: translateY(-50%); z-index: 1; }
+        
+        input[type="range"] {
+            position: absolute; width: 100%; background: none; pointer-events: none; -webkit-appearance: none; top: 50%; transform: translateY(-50%); z-index: 2; margin: 0;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; pointer-events: all; width: 16px; height: 16px; border-radius: 50%; background: white; border: 2px solid var(--primary-color); cursor: pointer;
+        }
+
+        /* 메인 콘텐츠 */
+        main { flex: 1; padding: 25px; }
+        .search-area { display: flex; margin-bottom: 25px; height: 40px; }
+        .search-area input { flex: 1; border: 1px solid var(--border-color); padding: 0 15px; font-size: 16px; }
+        .search-area button { background: var(--primary-color); color: white; border: none; padding: 0 30px; font-weight: bold; cursor: pointer; font-size: 18px; }
+
+        .result-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .product-grid { display: flex; gap: 20px; }
+        .product-card { flex: 1; border: 2px solid var(--primary-color); padding: 20px; min-height: 250px; }
+        .img-box { height: 150px; display: flex; align-items: center; justify-content: center; font-size: 35px; font-weight: bold; margin-bottom: 15px; }
+    </style>
 </head>
 <body>
 
-  <header>
-    <button>Home</button>
+<div class="wrapper">
+    <header>
+        <div class="nav-menu">
+            <button class="nav-item active" onclick="changeTab('tv', this)">TV</button>
+            <button class="nav-item" onclick="changeTab('refrigerator', this)">냉장고</button>
+            <button class="nav-item" onclick="changeTab('washer', this)">세탁기</button>
+            <button class="nav-item" onclick="changeTab('aircon', this)">에어컨</button>
+            <button class="nav-item" onclick="changeTab('cleaner', this)">청소기</button>
+        </div>
+        <div class="user-menu">
+            <button>로그인</button>
+            <button>마이 페이지</button>
+        </div>
+    </header>
 
-    <nav>
-      <button>로그인</button>
-      <button>마이 페이지</button>
-    </nav>
-  </header>
+    <div class="container">
+        <aside id="sidebar-content">
+            <!-- JS로 동적 생성됨 -->
+        </aside>
 
-  <main>
-    <p>홈 &gt; tv &gt; LG OLED TV</p>
+        <main>
+            <div class="search-area">
+                <input type="text" placeholder="검색어를 입력하세요.">
+                <button>검색</button>
+            </div>
+            
+            <div class="result-bar">
+                <span style="font-size: 22px;">검색 결과 xx건</span>
+                <div>정렬 기준 
+                    <select style="padding: 5px;">
+                        <option>추천순</option>
+                        <option>낮은가격순</option>
+                    </select>
+                </div>
+            </div>
 
-    <section>
-      <img src="tv-image.jpg" alt="LG OLED TV 이미지" width="500" />
+            <div class="product-grid">
+                <!-- 상품 카드 반복 -->
+                <div class="product-card">
+                    <div class="img-box">이미지</div>
+                    <p>상품명<br><span style="color:#666; font-size:13px;">상품코드</span></p>
+                    <p><strong>2,100,000원</strong></p>
+                </div>
+                <div class="product-card">
+                    <div class="img-box">이미지</div>
+                    <p>상품명<br><span style="color:#666; font-size:13px;">상품코드</span></p>
+                    <p><strong>2,100,000원</strong></p>
+                </div>
+                <div class="product-card">
+                    <div class="img-box">이미지</div>
+                    <p>상품명<br><span style="color:#666; font-size:13px;">상품코드</span></p>
+                    <p><strong>2,100,000원</strong></p>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
 
-      <div>
-        <h1>LG OLED evo TV</h1>
-        <p>OLED~~~~</p>
-        <p>2,389,000원</p>
+<script>
+    const categoryData = {
+        tv: ["OLED TV", "QLED TV", "UHD TV", "벽걸이형", "스탠드형"],
+        refrigerator: ["4도어", "양문형", "김치냉장고", "미니냉장고"],
+        washer: ["드럼 세탁기", "통돌이", "워시타워", "건조기"],
+        aircon: ["스탠드 에어컨", "벽걸이", "시스템 에어컨", "창문형"],
+        cleaner: ["무선 청소기", "로봇 청소기", "핸디형"]
+    };
 
-        <button>💗 찜하기</button>
-        <button>구매하기</button>
-      </div>
-    </section>
+    function changeTab(cat, btn) {
+        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderSidebar(cat);
+    }
 
-    <nav>
-      <button>상세 정보</button>
-      <button>스펙</button>
-      <button>리뷰(20)</button>
-      <button>매뉴얼</button>
-      <button>Q&amp;A</button>
-    </nav>
+    function renderSidebar(cat) {
+        const items = categoryData[cat];
+        const sidebar = document.getElementById('sidebar-content');
 
-    <section>
-      <!-- 상세 정보 내용 영역 -->
-    </section>
-  </main>
+        sidebar.innerHTML = `
+            <div class="filter-group">
+                <div class="filter-title">카테고리</div>
+                <ul class="check-list">
+                    ${items.map(i => `<li><input type="checkbox"> ${i}</li>`).join('')}
+                </ul>
+            </div>
+            
+            ${createSliderHTML("가격대", "price", 0, 500, "만 원")}
+            ${createSliderHTML("소비 전력", "power", 0, 100, "W")}
+        `;
+
+        // 슬라이더 이벤트 바인딩
+        initSlider("price");
+        initSlider("power");
+    }
+
+    function createSliderHTML(title, id, min, max, unit) {
+        return `
+            <div class="filter-group">
+                <div class="filter-title">${title}</div>
+                <div class="range-inputs">
+                    <input type="text" id="${id}-min-txt" value="${min}${unit}"> ~ 
+                    <input type="text" id="${id}-max-txt" value="${max}${unit}">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-track"></div>
+                    <input type="range" id="${id}-min" min="${min}" max="${max}" value="${min}">
+                    <input type="range" id="${id}-max" min="${min}" max="${max}" value="${max}">
+                </div>
+            </div>
+        `;
+    }
+
+    function initSlider(id) {
+        const minRange = document.getElementById(`${id}-min`);
+        const maxRange = document.getElementById(`${id}-max`);
+        const minTxt = document.getElementById(`${id}-min-txt`);
+        const maxTxt = document.getElementById(`${id}-max-txt`);
+        const unit = id === "price" ? "만 원" : "W";
+
+        function update() {
+            if (parseInt(minRange.value) > parseInt(maxRange.value)) {
+                minRange.value = maxRange.value;
+            }
+            minTxt.value = minRange.value + unit;
+            maxTxt.value = maxRange.value + unit;
+        }
+
+        minRange.oninput = update;
+        maxRange.oninput = update;
+    }
+
+    // 첫 로드 시 TV로 설정
+    renderSidebar('tv');
+</script>
 
 </body>
 </html>
-=======
-<!-- 상품 상세 페이지 -->
-
-<!-- 나는 바본 -->
->>>>>>> 2698ac8330a04c0ed1d6e99a81563ad2e0f7e0fe
