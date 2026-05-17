@@ -1,0 +1,25 @@
+<div id="chat-messages" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 bg-gray-50/30">
+    
+    <div id="chat-messages-list" class="w-full space-y-4">
+        {% for msg in messages %}
+            {% if msg.is_user %}
+                <div class="flex justify-end w-full">
+                    <div class="max-w-[75%] rounded-2xl rounded-tr-none bg-red-600 px-4 py-2.5 text-sm font-medium text-white shadow-2xs break-all">
+                        <p class="leading-relaxed">{{ msg.content }}</p>
+                    </div>
+                </div>
+            {% else %}
+                <div class="flex justify-start w-full">
+                    <div class="max-w-[75%] rounded-2xl rounded-tl-none bg-white border border-gray-100 px-4 py-2.5 text-sm font-medium text-gray-800 shadow-3xs break-all">
+                        <p class="leading-relaxed">{{ msg.content }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% empty %}
+            <div id="empty-chat-notice" class="h-full flex flex-col items-center justify-center text-gray-400 py-8">
+                <p class="text-sm font-medium">LG봇에게 궁금한 가전 정보를 물어보세요!</p>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>

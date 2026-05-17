@@ -1,0 +1,98 @@
+<section class="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-bold text-gray-900">내가 찜한 상품</h2>
+        <span class="text-xs font-semibold text-red-600 bg-red-50 px-2.5 py-1 rounded-full">총 {{ favorites|length }}개</span>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+        
+        {% for product in favorites %}
+        <div class="group relative flex flex-col justify-between rounded-2xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:shadow-md hover:border-gray-200 h-full">
+            
+            <div>
+                <div class="aspect-square w-full rounded-xl bg-gray-50 p-2 flex items-center justify-center overflow-hidden mb-3">
+                    {% if product.img_link %}
+                    <img src="{{ product.img_link }}" alt="{{ product.name }}"
+                        class="max-h-[140px] object-contain transition-transform duration-300 group-hover:scale-105 pointer-events-none" />
+                    {% else %}
+                    <div class="flex flex-col items-center justify-center text-gray-300 text-xs pointer-events-none">
+                        <span class="text-2xl mb-1">📷</span>
+                        <span>이미지 준비중</span>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="space-y-1 mb-4">
+                    <span class="text-[10px] font-bold text-red-600">
+                        {% if product.product_type == "TV" %}TV{% elif product.product_type == "REF" %}냉장고{% else %}가전{% endif %}
+                    </span>
+                    <h3 class="text-sm font-bold text-gray-900 truncate">{{ product.name }}</h3>
+                    <p class="text-xs font-black text-gray-900">{{ product.price }}원</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 mt-auto pt-2 border-t border-gray-50">
+                <button type="button"
+                    onclick="mypageWishlistToggle(this, '{{ product.product_code }}')"
+                    class="w-full rounded-full border border-red-600 bg-white py-2 text-xs font-semibold text-red-600 shadow-sm transition-all duration-200 hover:bg-red-50 hover:shadow cursor-pointer flex items-center justify-center">
+                    찜 해제
+                </button>
+
+                <button type="button"
+                    onclick="mypageBuyAction('{{ product.product_code }}')"
+                    class="w-full rounded-full bg-red-600 py-2 text-xs font-semibold text-white shadow-sm transition-all duration-200 hover:bg-red-700 hover:shadow-md cursor-pointer">
+                    구매하기
+                </button>
+            </div>
+
+        </div>
+        {% empty %}
+        <div class="col-span-full py-12 text-center">
+            <p class="text-sm text-gray-400">아직 찜한 가전제품이 없습니다.</p>
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+
+<script>
+function mypageWishlistToggle(button, productCode) {
+    let formData = new FormData();
+    formData.append("product_code", productCode);
+    formData.append("action", "toggle_favorite");
+
+    // 유저 경험을 위해 백엔드 응답을 기다리지 않고 카드 지우기 반영
+    const productCard = button.closest('.group');
+    if (productCard) {
+        productCard.remove();
+    }
+
+    // 카드가 지워진 후 남아있는 찜 카드가 0개라면 화면을 리로드해서 빈 화면 문구를 띄우기
+    if (document.querySelectorAll('.grid > .group').length === 0) {
+        location.reload();
+        return; // 리로드 시 아래 fetch는 중단되어도 브라우저가 알아서 처리
+    }
+
+    // 배경에서 DB 지우기
+    fetch("{% url 'accounts:mypage' %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: formData
+    })
+    .then(response => {
+        // 서버 통신 자체는 성공했는지 체크
+        if (!response.ok) {
+            console.error("서버 반영에 실패했습니다.");
+        }
+    })
+    .catch(error => {
+        console.error('마이페이지 찜 연동 에러:', error);
+    });
+}
+
+// function mypageBuyAction(productCode) {
+//     // 필요 시 구매하기 연동 처리를 여기에 작성
+// }
+</script>
